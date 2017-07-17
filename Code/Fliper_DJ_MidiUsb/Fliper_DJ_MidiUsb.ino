@@ -16,6 +16,7 @@ http://www.bitcontrollers.com
 gustavosilveira@musiconerd.com
 
 */
+#include "MIDIUSB.h"
  
 #include <Multiplexer4067.h> // Multiplexer CD4067 library >> https://github.com/sumotoy/Multiplexer4067
 #include <Thread.h> // Threads library >> https://github.com/ivanseidel/ArduinoThread
@@ -129,14 +130,14 @@ void readButtons() {
 
         if (buttonCState[i] == LOW) {
           noteOn(potMidiCh(), note + i, 127);  // Channel 0, middle C, normal velocity
-          MIDIUSB.flush();
+          MidiUSB.flush();
           //MIDI.sendNoteOn(note + i, 127, potMidiCh()); // envia NoteOn(nota, velocity, canal midi)
           //Serial.print("Note: "); Serial.print(note + i); Serial.println(" On");
           buttonPState[i] = buttonCState[i];
         }
         else {
           noteOn(potMidiCh(), note + i, 0);  // Channel 0, middle C, normal velocity
-          MIDIUSB.flush();
+          MidiUSB.flush();
           //MIDI.sendNoteOn(note + i, 0, potMidiCh());
           //Serial.print("Note: "); Serial.print(note + i); Serial.println(" Off");
           buttonPState[i] = buttonCState[i];
@@ -177,7 +178,7 @@ void readPots() {
       int ccValue = map(potCState[i], 22, 1022, 0, 127);
       if (lastCcValue[i] != ccValue) {
         controlChange(11, cc + i, ccValue); // manda control change (channel, CC, value)
-        MIDIUSB.flush();
+        MidiUSB.flush();
         //MIDI.sendControlChange(cc + i, map(potCState[i], 0, 1023, 0, 127), 11); // envia Control Change (numero do CC, valor do CC, canal midi)
         //Serial.print("CC: "); Serial.print(cc + i); Serial.print(" value:"); Serial.println(map(potCState[i], 22, 1023, 0, 127));
         potPState[i] = potCState[i]; // armazena a leitura atual do potenciometro para comparar com a proxima
@@ -202,17 +203,27 @@ int potMidiCh () {
 
 /////////////////////////////////////////////
 // Arduino (pro)micro midi functions
+//void noteOn(byte channel, byte pitch, byte velocity) {
+//  MIDIEvent noteOn = {0x09, 0x90 | channel, pitch, velocity};
+//  MIDIUSB.write(noteOn);
+//}
+//
+//void noteOff(byte channel, byte pitch, byte velocity) {
+//  MIDIEvent noteOff = {0x08, 0x80 | channel, pitch, velocity};
+//  MIDIUSB.write(noteOff);
+//}
+
 void noteOn(byte channel, byte pitch, byte velocity) {
-  MIDIEvent noteOn = {0x09, 0x90 | channel, pitch, velocity};
-  MIDIUSB.write(noteOn);
+  midiEventPacket_t noteOn = {0x09, 0x90 | channel, pitch, velocity};
+  MidiUSB.sendMIDI(noteOn);
 }
 
 void noteOff(byte channel, byte pitch, byte velocity) {
-  MIDIEvent noteOff = {0x08, 0x80 | channel, pitch, velocity};
-  MIDIUSB.write(noteOff);
+  midiEventPacket_t noteOff = {0x08, 0x80 | channel, pitch, velocity};
+  MidiUSB.sendMIDI(noteOff);
 }
 
 void controlChange(byte channel, byte control, byte value) {
-  MIDIEvent event = {0x0B, 0xB0 | channel, control, value};
-  MIDIUSB.write(event);
+  midiEventPacket_t event = {0x0B, 0xB0 | channel, control, value};
+  MidiUSB.sendMIDI(event);
 }
