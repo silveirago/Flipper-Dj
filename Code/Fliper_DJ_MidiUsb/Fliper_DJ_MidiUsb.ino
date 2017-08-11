@@ -202,7 +202,7 @@ int potMidiCh () {
 }
 
 /////////////////////////////////////////////
-// Arduino (pro)micro midi functions
+// Arduino (pro)micro midi functions Arcore Library
 //void noteOn(byte channel, byte pitch, byte velocity) {
 //  MIDIEvent noteOn = {0x09, 0x90 | channel, pitch, velocity};
 //  MIDIUSB.write(noteOn);
@@ -213,6 +213,8 @@ int potMidiCh () {
 //  MIDIUSB.write(noteOff);
 //}
 
+/////////////////////////////////////////////
+// Arduino (pro)micro midi functions MIDIUSB Library
 void noteOn(byte channel, byte pitch, byte velocity) {
   midiEventPacket_t noteOn = {0x09, 0x90 | channel, pitch, velocity};
   MidiUSB.sendMIDI(noteOn);
