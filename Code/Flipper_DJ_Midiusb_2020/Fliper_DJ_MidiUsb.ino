@@ -1,10 +1,11 @@
 #include <Control_Surface.h>
+
 USBMIDI_Interface midi;
 // Instantiate a multiplexer
 CD74HC4067 mux = {
   A3,              // analog pin
   {2, 3, 4, 5}, // Address pins S0, S1, S2, S3
-  // 7, // Optionally, specify the enable pin
+
 };
 // Create an array of potentiometers that send out MIDI Control Change messages 
 // when you turn the potentiometers connected to the 16 input pins of the mux.
@@ -21,8 +22,10 @@ CCPotentiometer volumePotentiometers[] = {
   { mux.pin(8), { MIDI_CC::Channel_Volume, CHANNEL_9 } },
   { mux.pin(9), { MIDI_CC::Channel_Volume, CHANNEL_10 } },
 // End 10 Potentiometers
+  
 // Start Button row 3
   { mux.pin(10), {(47), CHANNEL_1 } },
+  
 // Start Buttons row 4 
   { mux.pin(11), { (48), CHANNEL_1 } },
   { mux.pin(12), { (49), CHANNEL_1 } },
