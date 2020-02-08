@@ -1,3 +1,3 @@
 
-## Adding tttapa control surface before compile code:
+## Adding tttapa "control surface" library before compile code:
 * https://github.com/tttapa/Control-Surface
