@@ -9,7 +9,7 @@ CD74HC4067 mux = {
 };
 // Create an array of potentiometers that send out MIDI Control Change messages 
 // when you turn the potentiometers connected to the 16 input pins of the mux.
-CCPotentiometer volumePotentiometers[] = {
+CCPotentiometer eqPotentiometers[] = {
 // Start 10 Potentiomters
   { mux.pin(0), { MIDI_CC::Channel_Volume, CHANNEL_1 } },
   { mux.pin(1), { MIDI_CC::Channel_Volume, CHANNEL_2 } },
