@@ -192,7 +192,7 @@ void readPots() {
 /////////////////////////////////////////////
 // calculates midi channel based on pot position
 int potMidiCh () {
-  int potCh =  map(mplex.readChannel(muxPotPin[9]), 22, 1023, 0, 4);
+  int potCh =  map(mplex.readChannel(muxPotPin[6]), 22, 1023, 0, 4);
 
   if (potCh == 4) {
     potCh = 3;
